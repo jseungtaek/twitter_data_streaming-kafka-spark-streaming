@@ -57,8 +57,8 @@ def set_rules(delete):
     # You can adjust the rules if needed
     sample_rules = [
         #{"value":  "Narco-Saints", "tag": "Narco-Saints pictures"},
-        {"value": "squidgame has:images -grumpy", "tag": "squidgame pictures"},
-        #{"value": "bts has:images -grumpy", "tag": "bts pictures"},
+        #{"value": "squidgame has:images -grumpy", "tag": "squidgame pictures"},
+        {"value": "bts has:images -grumpy", "tag": "bts pictures"},
         #{"value": "cat has:images -grumpy", "tag": "cat pictures"},
     ]
     payload = {"add": sample_rules}
@@ -89,10 +89,9 @@ def get_stream(set):
     for response_line in response.iter_lines():
         if response_line:
             json_response = json.loads(response_line)
-            producer.send(topic, value=json_response)
+            producer.send(topic, value=json_response.get("data").get("text")) #text parsing
             producer.flush()
-            print(json.dumps(json_response))
-
+            print(json_response.get("data").get("text"))
 
 def main():
     rules = get_rules()
